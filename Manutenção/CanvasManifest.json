@@ -97,7 +97,7 @@
       "zeroalltabindexes": false
     },
     "Author": "",
-    "BindingErrorCount": 0,
+    "BindingErrorCount": 3,
     "ContainsThirdPartyPcfControls": false,
     "DefaultConnectedDataSourceMaxGetRowsCount": 500,
     "DocumentAppType": "Phone",
@@ -132,9 +132,7 @@
   },
   "ScreenOrder": [
     "Home",
-    "Manutencao",
     "Manutencao 0.1",
-    "Gerenciar",
     "Gerenciar 0.1"
   ]
 }
