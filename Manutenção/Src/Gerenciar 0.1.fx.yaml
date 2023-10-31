@@ -1,0 +1,1660 @@
+"'Gerenciar 0.1' As screen":
+    Fill: =RGBA(136, 160, 209, 1)
+
+    "Manutencoes_2 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        DelayItemLoading: =true
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =876
+        Items: |
+            =/*Sort(
+                Filter(
+                    Requisicoes;
+                     
+                    If(
+                        IsBlank(FiltroStatus);
+                        true;
+                        'Status '.Value = FiltroStatus
+                    )
+                );
+                ID;
+                SortOrder.Descending
+            )*/
+            
+            Sort(
+                Filter(
+                    Requisicoes,
+                    (IsBlank(FiltroStatus) || 'Status '.Value = FiltroStatus) &&
+                    (IsBlank(TextInputPesquisa_1.Text) || 
+                        TextInputPesquisa_1.Text in 'Descrição ' Or Title)
+                ),
+                ID,
+                SortOrder.Descending
+            )
+        Layout: =Layout.Vertical
+        LoadingSpinner: =LoadingSpinner.Data
+        OnSelect: |-
+            =UpdateContext({Card_InfoManutencao_1: true});
+            UpdateContext({Selecionado: true})
+        ShowNavigation: =true
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =337
+        Width: =616
+        X: =12
+        Y: =247
+        ZIndex: =1
+
+        Rectangle1_1 As rectangle:
+            DisabledFill: =
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =RGBA(136, 160, 209, 1)
+            Height: =3
+            OnSelect: =Select(Parent)
+            Width: =616
+            Y: =334
+            ZIndex: =1
+
+        Label3_35 As label:
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =17
+            Text: =ThisItem.Title
+            Width: =444
+            X: =18
+            Y: =43
+            ZIndex: =2
+
+        Label3_48 As label:
+            Align: =Align.Right
+            Color: |-
+                =If(
+                    ThisItem.'Status '.Value = "Pendente",
+                    Color.Blue,
+                    ThisItem.'Status '.Value = "Concluido",
+                    Color.Green,
+                    ThisItem.'Status '.Value = "Cancelado",
+                    Color.Red,
+                    ThisItem.'Status '.Value = "Em andamento",
+                    Color.DarkOrange
+                )
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =22
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: =ThisItem.'Status '.Value
+            Width: =188
+            X: =413
+            Y: =147
+            ZIndex: =3
+
+        Label3_36 As label:
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =39
+            OnSelect: =Select(Parent)
+            Size: =17
+            Text: |-
+                ="Descrição:"
+            Width: =128
+            X: =18
+            Y: =157
+            ZIndex: =4
+
+        Label3_34 As label:
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =16
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: =ThisItem.ID
+            Width: =78
+            X: =18
+            Y: =16
+            ZIndex: =5
+
+        Label3_46 As label:
+            Align: =Align.Right
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Normal,
+                    FontWeight.Lighter
+                )
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: |-
+                =If(
+                    IsBlank(ThisItem.DataAprovador),
+                    "-----------------",
+                    ThisItem.DataAprovador
+                )
+            Width: =140
+            X: =462
+            Y: =114
+            ZIndex: =6
+
+        Label3_45 As label:
+            Color: =RGBA(102, 102, 102, 1)
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =39
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: =ThisItem.'Criado por'.Email
+            Width: =325
+            X: =18
+            Y: =81
+            ZIndex: =7
+
+        Label4_2 As label:
+            Height: =16
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: |
+                =CountRows(ThisItem.Anexos)
+            Underline: =true
+            Width: =45
+            X: =537
+            Y: =13
+            ZIndex: =8
+
+        Icon3_5 As icon.Trash:
+            Color: =RGBA(118, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            DisplayMode: |-
+                =If(
+                    ThisItem.'Status '.Value = "Pendente",
+                    DisplayMode.Edit,
+                    ThisItem.'Status '.Value = "Em análise",
+                    DisplayMode.Edit,
+                    DisplayMode.Disabled
+                )
+            Height: =35
+            Icon: =Icon.Trash
+            OnSelect: |-
+                =UpdateContext({Cont_ExclManutencao_1: true})
+            Width: =35
+            X: =567
+            Y: =20
+            ZIndex: =9
+
+        Icon3_4 As icon.Trash:
+            Color: =RGBA(0, 18, 107, 0.5)
+            Height: =35
+            Icon: =Icon.PaperClip
+            OnSelect: =
+            Width: =35
+            X: =520
+            Y: =20
+            ZIndex: =10
+
+        Icon2_2 As icon.ExpandView:
+            Color: =RGBA(0, 18, 107, 0.95)
+            Height: =35
+            Icon: =Icon.ExpandView
+            OnSelect: |-
+                =
+                UpdateContext({Cont_EditManutencao_1: true})
+            Visible: |
+                =true
+            Width: =35
+            X: =475
+            Y: =20
+            ZIndex: =11
+
+        Label3_50 As label:
+            Fill: =RGBA(166, 166, 166, 0.1)
+            FontWeight: |-
+                =
+                If(
+                    ThisItem.IsSelected,
+                    FontWeight.Normal,
+                    FontWeight.Lighter
+                
+                )
+            Height: =119
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.'Descrição '
+            Width: =583
+            X: =17
+            Y: =201
+            ZIndex: =12
+
+        Separator1_3 As rectangle:
+            BorderColor: =RGBA(175, 191, 224, 1)
+            Fill: =RGBA(77, 77, 77, 1)
+            Height: =3
+            OnSelect: =Select(Parent)
+            Visible: =ThisItem.IsSelected
+            Width: =616
+            Y: =334
+            ZIndex: =13
+
+        Label3_44 As label:
+            Align: =Align.Right
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Normal,
+                    FontWeight.Lighter
+                )
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: =ThisItem.DataEstimada
+            Width: =140
+            X: =462
+            Y: =79
+            ZIndex: =14
+
+        Label3_49 As label:
+            FontWeight: |-
+                =If(
+                    ThisItem.IsSelected,
+                    FontWeight.Bold,
+                    FontWeight.Normal
+                
+                )
+            Height: =31
+            OnSelect: =Select(Parent)
+            Size: =15
+            Text: =ThisItem.Prioridade.Value
+            Width: =178
+            X: =146
+            Y: =161
+            ZIndex: =17
+
+        Label3_47 As label:
+            Color: =RGBA(102, 102, 102, 1)
+            Height: =20
+            OnSelect: =Select(Parent)
+            Size: =14
+            Text: =ThisItem.Criado
+            Width: =190
+            X: =18
+            Y: =124
+            ZIndex: =18
+
+        Circle2_4 As circle:
+            Fill: =RGBA(0, 18, 107, 1)
+            Height: =20
+            OnSelect: =Select(Parent)
+            Width: =20
+            X: =442
+            Y: =84
+            ZIndex: =19
+
+        Circle2_5 As circle:
+            Fill: =RGBA(54, 176, 75, 1)
+            Height: =20
+            OnSelect: =Select(Parent)
+            Width: =20
+            X: =442
+            Y: =119
+            ZIndex: =20
+
+    Icon1_4 As icon.Add:
+        Color: =RGBA(9, 33, 98, 1)
+        Height: =55
+        Icon: =Icon.BackArrow
+        OnSelect: =Navigate(Home)
+        Width: =55
+        X: =25
+        Y: =17
+        ZIndex: =4
+
+    ContExcluir1_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(219, 219, 219, 0.5)
+        Height: =1136
+        Visible: =Cont_ExclManutencao_1
+        Width: =640
+        ZIndex: =5
+
+        Button3_8 As button:
+            BorderColor: =RGBA(118, 0, 0, 1)
+            BorderThickness: =3
+            DisabledBorderColor: =RGBA(118, 0, 0, 1)
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisabledFill: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.Disabled
+            Height: =259
+            RadiusBottomLeft: =50
+            RadiusBottomRight: =50
+            RadiusTopLeft: =50
+            RadiusTopRight: =50
+            Size: =24
+            Text: =""
+            Width: =504
+            X: =68
+            Y: =440
+            ZIndex: =1
+
+        Label2_15 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Lighter
+            Height: =96
+            Size: =20
+            Text: ="Deseja mesmo excluir essa solicitação de manutenção?"
+            Width: =478
+            X: =81
+            Y: =509
+            ZIndex: =2
+
+        Button1_18 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(54, 176, 75, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(54, 176, 75, 0.8)
+            OnSelect: |
+                =Remove(
+                    Requisicoes,
+                    GallManutencoes.Selected
+                );
+                UpdateContext({Cont_ExclManutencao_1: false});
+            Size: =20
+            Text: ="SIM"
+            Width: =190
+            X: =113
+            Y: =620
+            ZIndex: =3
+
+        Button1_19 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(118, 0, 0, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(118, 0, 0, 0.8)
+            OnSelect: |-
+                =UpdateContext({Cont_ExclManutencao_1: false})
+            Size: =20
+            Text: ="NÃO"
+            Width: =190
+            X: =337
+            Y: =620
+            ZIndex: =4
+
+        Label2_14 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =54
+            Size: =24
+            Text: ="Deletar?"
+            Width: =160
+            X: =240
+            Y: =455
+            ZIndex: =6
+
+    ContRecusa_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(219, 219, 219, 0.5)
+        Height: =1136
+        Visible: =Cont_RecusaManutencao
+        Width: =640
+        ZIndex: =6
+
+        Button3_9 As button:
+            BorderColor: =RGBA(118, 0, 0, 1)
+            BorderThickness: =3
+            DisabledBorderColor: =RGBA(118, 0, 0, 1)
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisabledFill: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.Disabled
+            Height: =259
+            RadiusBottomLeft: =50
+            RadiusBottomRight: =50
+            RadiusTopLeft: =50
+            RadiusTopRight: =50
+            Size: =24
+            Text: =""
+            Width: =504
+            X: =68
+            Y: =440
+            ZIndex: =1
+
+        Label2_17 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Lighter
+            Height: =96
+            Size: =20
+            Text: ="Deseja mesmo cancelar essa solicitação de manutenção?"
+            Width: =478
+            X: =81
+            Y: =509
+            ZIndex: =2
+
+        Button1_23 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(54, 176, 75, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(54, 176, 75, 0.8)
+            OnSelect: |-
+                =Patch(
+                    Requisicoes,
+                    {ID: Manutencoes_2.Selected.ID},
+                    {'Status ': {Value: "Cancelado"}}
+                );
+                
+                //Colocar mensagem de item cancelado
+                //Concluido.Run(Manutencoes_1.Selected.ID);;
+                
+                SubmitForm(Edit_manutencao_2);
+                
+                Notify(
+                    "Operação concluída com sucesso!",
+                    NotificationType.Success
+                );
+                UpdateContext({Cont_RecusaManutencao: false});
+                UpdateContext({Cont_EditManutencao_1: false})
+            Size: =20
+            Text: ="SIM"
+            Width: =190
+            X: =113
+            Y: =620
+            ZIndex: =3
+
+        Button1_24 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(118, 0, 0, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(118, 0, 0, 0.8)
+            OnSelect: |-
+                =UpdateContext({Cont_RecusaManutencao: false})
+            Size: =20
+            Text: ="NÃO"
+            Width: =190
+            X: =337
+            Y: =620
+            ZIndex: =4
+
+        Label2_16 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =54
+            Size: =24
+            Text: ="Cancelar"
+            Width: =160
+            X: =240
+            Y: =455
+            ZIndex: =6
+
+    ContAndamento_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(219, 219, 219, 0.5)
+        Height: =1136
+        Visible: =Cont_AndamentoManutencao
+        Width: =640
+        ZIndex: =7
+
+        Button3_10 As button:
+            BorderColor: =RGBA(118, 0, 0, 1)
+            BorderThickness: =3
+            DisabledBorderColor: =RGBA(118, 0, 0, 1)
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisabledFill: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.Disabled
+            Height: =259
+            RadiusBottomLeft: =50
+            RadiusBottomRight: =50
+            RadiusTopLeft: =50
+            RadiusTopRight: =50
+            Size: =24
+            Text: =""
+            Width: =504
+            X: =68
+            Y: =440
+            ZIndex: =1
+
+        Label2_19 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Lighter
+            Height: =96
+            Size: =20
+            Text: ="Deseja mesmo dar andamento nessa manutenção?"
+            Width: =478
+            X: =81
+            Y: =509
+            ZIndex: =2
+
+        Button1_25 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(54, 176, 75, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(54, 176, 75, 0.8)
+            OnSelect: |-
+                =SubmitForm(Edit_manutencao_2);
+                ManutAndamento.Run(Manutencoes_2.Selected.ID);
+                Patch(
+                    Requisicoes,
+                    {ID: Manutencoes_2.Selected.ID},
+                    {'Status ': {Value: "Em andamento"}}
+                );
+                
+                Notify(
+                    "Operação concluída com sucesso!",
+                    NotificationType.Success
+                );
+                UpdateContext({Cont_AndamentoManutencao: false});
+                UpdateContext({Cont_EditManutencao_1: false})
+            Size: =20
+            Text: ="SIM"
+            Width: =190
+            X: =113
+            Y: =620
+            ZIndex: =3
+
+        Button1_26 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(118, 0, 0, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(118, 0, 0, 0.8)
+            OnSelect: |-
+                =UpdateContext({Cont_AndamentoManutencao: false})
+            Size: =20
+            Text: ="NÃO"
+            Width: =190
+            X: =337
+            Y: =620
+            ZIndex: =4
+
+        Label2_18 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =54
+            Size: =24
+            Text: ="Em andamento"
+            Width: =414
+            X: =113
+            Y: =455
+            ZIndex: =6
+
+    ContConcluir_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(219, 219, 219, 0.5)
+        Height: =1136
+        Visible: =Cont_ConcluirManutencao
+        Width: =640
+        ZIndex: =8
+
+        Button3_11 As button:
+            BorderColor: =RGBA(118, 0, 0, 1)
+            BorderThickness: =3
+            DisabledBorderColor: =RGBA(118, 0, 0, 1)
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisabledFill: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.Disabled
+            Height: =259
+            RadiusBottomLeft: =50
+            RadiusBottomRight: =50
+            RadiusTopLeft: =50
+            RadiusTopRight: =50
+            Size: =24
+            Text: =""
+            Width: =504
+            X: =68
+            Y: =440
+            ZIndex: =1
+
+        Label2_21 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Lighter
+            Height: =96
+            Size: =20
+            Text: ="Deseja mesmo concluir essa manutenção?"
+            Width: =478
+            X: =81
+            Y: =509
+            ZIndex: =2
+
+        Button1_27 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(54, 176, 75, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(54, 176, 75, 0.8)
+            OnSelect: |-
+                =Patch(
+                    Requisicoes,
+                    {ID: Manutencoes_2.Selected.ID},
+                    {'Status ': {Value: "Concluido"}}
+                );
+                ManutConcluido.Run(Manutencoes_2.Selected.ID);
+                SubmitForm(Edit_manutencao_2);
+                Notify(
+                    "Operação concluída com sucesso!",
+                    NotificationType.Success
+                );
+                
+                Notify(
+                    "Operação concluída com sucesso!",
+                    NotificationType.Success
+                );
+                UpdateContext({Cont_ConcluirManutencao: false});
+                UpdateContext({Cont_EditManutencao_1: false})
+            Size: =20
+            Text: ="SIM"
+            Width: =190
+            X: =113
+            Y: =620
+            ZIndex: =3
+
+        Button1_28 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(118, 0, 0, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =62
+            HoverFill: =RGBA(118, 0, 0, 0.8)
+            OnSelect: |-
+                =UpdateContext({Cont_ConcluirManutencao: false})
+            Size: =20
+            Text: ="NÃO"
+            Width: =190
+            X: =337
+            Y: =620
+            ZIndex: =4
+
+        Label2_20 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =54
+            Size: =24
+            Text: ="Concluir"
+            Width: =414
+            X: =113
+            Y: =455
+            ZIndex: =6
+
+    TextInputPesquisa_1 As text:
+        Default: =
+        Height: =60
+        HintText: ="Pesquisar "
+        MaxLength: =28
+        RadiusBottomLeft: =20
+        RadiusBottomRight: =20
+        RadiusTopLeft: =20
+        RadiusTopRight: =20
+        Size: =20
+        Width: =616
+        X: =12
+        Y: =167
+        ZIndex: =13
+
+    Icon3_1 As icon.Cancel:
+        Color: |
+            =
+            If(
+                !IsBlank(TextInputPesquisa_1.Text),
+                RGBA(0, 18, 107, 1),
+                RGBA(0, 18, 107, 0.5)
+                
+            )
+        Height: =50
+        Icon: =Icon.Cancel
+        OnSelect: |
+            =Reset(TextInputPesquisa_1)
+        Width: =50
+        X: =563
+        Y: =172
+        ZIndex: =14
+
+    Rectangle4_11 As rectangle:
+        Height: =50
+        Width: =1
+        X: =555
+        Y: =172
+        ZIndex: =15
+
+    ContEdit1_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(214, 223, 238, 1)
+        Height: =1136
+        Visible: =Cont_EditManutencao_1
+        Width: =640
+        ZIndex: =16
+
+        Rectangle1_8 As rectangle:
+            Fill: =RGBA(50, 86, 160, 1)
+            Height: =90
+            Width: =640
+            ZIndex: =1
+
+        Label1_4 As label:
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =90
+            Size: =21
+            Text: ="Editar Manutenção"
+            Width: =274
+            X: =183
+            ZIndex: =2
+
+        Arrow1_3 As arrow.backArrow:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =55
+            OnSelect: |-
+                =UpdateContext({Cont_EditManutencao_1: false})
+            Width: =55
+            X: =19
+            Y: =17
+            ZIndex: =3
+
+        Edit_manutencao_2 As form:
+            DataSource: =Requisicoes
+            Fill: =RGBA(214, 223, 238, 1)
+            Height: =1047
+            Item: =Manutencoes_2.Selected
+            OnSuccess: |+
+                =Notify(
+                    "Operação concluída com sucesso!",
+                    NotificationType.Success
+                );
+                UpdateContext({Cont_EditManutencao_1: false});
+                
+            Width: =640
+            Y: =89
+            ZIndex: =4
+
+            DataCard6_1 As typedDataCard.blankCard:
+                BorderStyle: =BorderStyle.Solid
+                DisplayMode: =DisplayMode.Edit
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =115
+                Width: =640
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                Rectangle3_16 As rectangle:
+                    Height: =65
+                    Width: =580
+                    X: =30
+                    Y: =25
+                    ZIndex: =1
+
+                Label7_16 As label:
+                    Align: =Align.Center
+                    BorderColor: =RGBA(56, 96, 178, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =65
+                    Size: =21
+                    Text: ="Campos obrigatorios"
+                    Width: =580
+                    X: =30
+                    Y: =25
+                    ZIndex: =2
+
+            DataEstimada_DataCard3_1 As typedDataCard.dateEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DataEstimada"
+                Default: =ThisItem.DataEstimada
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"DataEstimada")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =DataCardValue11_1.SelectedDate
+                Width: =640
+                X: =0
+                Y: =3
+                ZIndex: =1
+
+                DataCardKey11_1 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: ="Data Desejada para Concluir"
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue11_1 As datepicker:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    DefaultDate: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    EndYear: =Year(Today())+100
+                    Height: =70
+                    IsEditable: =true
+                    PaddingBottom: =0
+                    PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                    Size: =24
+                    StartYear: =1899
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey11_1.Y + DataCardKey11_1.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage11_1 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue11_1.Y + DataCardValue11_1.Height
+                    ZIndex: =3
+
+                StarVisible11_1 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey11_1.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey11_1.Y
+                    ZIndex: =4
+
+            "'Descrição _DataCard2_3' As typedDataCard.textualMultiLineEditCard":
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="Descri_x00e7__x00e3_o"
+                Default: =ThisItem.'Descrição '
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"Descri_x00e7__x00e3_o")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =301
+                Required: =false
+                Update: =DataCardValue7_6.Text
+                Width: =640
+                X: =0
+                Y: =4
+                ZIndex: =1
+
+                DataCardKey7_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue7_6 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =184
+                    Mode: =TextMode.MultiLine
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey7_6.Y + DataCardKey7_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage7_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue7_6.Y + DataCardValue7_6.Height
+                    ZIndex: =3
+
+                StarVisible7_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey7_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey7_6.Y
+                    ZIndex: =4
+
+                Rectangle4_8 As rectangle:
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =1
+                    Width: =580
+                    X: =30
+                    Y: =279
+                    ZIndex: =5
+
+            DataCard5_1 As typedDataCard.blankCard:
+                BorderStyle: =BorderStyle.Solid
+                DisplayMode: =DisplayMode.Edit
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =105
+                Width: =640
+                X: =0
+                Y: =5
+                ZIndex: =1
+
+                Rectangle3_17 As rectangle:
+                    Height: =65
+                    Width: =580
+                    X: =30
+                    Y: =20
+                    ZIndex: =1
+
+                Label7_17 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(255, 255, 255, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =65
+                    Size: =21
+                    Text: ="Campos opcionais"
+                    Width: =550
+                    X: =60
+                    Y: =20
+                    ZIndex: =2
+
+            DataCard11_1 As typedDataCard.blankCard:
+                BorderStyle: =BorderStyle.Solid
+                DisplayMode: =DisplayMode.Edit
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =100
+                Width: =640
+                X: =0
+                Y: =9
+                ZIndex: =1
+
+                Rectangle3_18 As rectangle:
+                    Fill: =RGBA(246, 88, 16, 1)
+                    Height: =65
+                    Width: =580
+                    X: =30
+                    Y: =18
+                    ZIndex: =1
+
+                Label7_18 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(255, 255, 255, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =65
+                    Size: =21
+                    Text: ="Campos Aprovador"
+                    Width: =579
+                    X: =30
+                    Y: =18
+                    ZIndex: =2
+
+            DataAprovador_DataCard3_1 As typedDataCard.dateEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DataAprovador"
+                Default: =ThisItem.DataAprovador
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"DataAprovador")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =183
+                Required: =false
+                Update: =DataCardValue12_1.SelectedDate
+                Width: =640
+                X: =0
+                Y: =10
+                ZIndex: =1
+
+                DataCardKey12_1 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: ="Data Prevista para Concluir"
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue12_1 As datepicker:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    DefaultDate: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    EndYear: =Year(Today())+100
+                    Height: =70
+                    IsEditable: =true
+                    PaddingBottom: =0
+                    PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                    Size: =24
+                    StartYear: =1899
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey12_1.Y + DataCardKey12_1.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage12_1 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue12_1.Y + DataCardValue12_1.Height
+                    ZIndex: =3
+
+                StarVisible12_1 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey12_1.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey12_1.Y
+                    ZIndex: =4
+
+                Rectangle4_10 As rectangle:
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =1
+                    Width: =580
+                    X: =30
+                    Y: =165
+                    ZIndex: =5
+
+            DataCard4_1 As typedDataCard.blankCard:
+                BorderStyle: =BorderStyle.Solid
+                DisplayMode: =DisplayMode.Edit
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =125
+                Width: =640
+                X: =0
+                Y: =11
+                ZIndex: =1
+
+                Button1_20 As button:
+                    BorderColor: =RGBA(255, 255, 255, 1)
+                    DisplayMode: |-
+                        =If(
+                            Manutencoes_2.Selected.'Status '.Value = "Pendente",
+                            DisplayMode.Edit,
+                            Manutencoes_2.Selected.'Status '.Value = "Em andamento",
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    Fill: =RGBA(54, 176, 75, 1)
+                    FontWeight: =FontWeight.Normal
+                    Height: =68
+                    HoverFill: =RGBA(54, 176, 75, 0.8)
+                    OnSelect: |-
+                        =
+                        UpdateContext({Cont_ConcluirManutencao: true}) 
+                    Size: =18
+                    Text: ="CONCLUIR"
+                    Width: =152
+                    X: =50
+                    Y: =29
+                    ZIndex: =1
+
+                Button1_22 As button:
+                    BorderColor: =RGBA(255, 255, 255, 1)
+                    DisplayMode: |-
+                        =If(
+                            Manutencoes_2.Selected.'Status '.Value = "Pendente",
+                            DisplayMode.Edit,
+                            Manutencoes_2.Selected.'Status '.Value = "Em andamento",
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    Fill: =RGBA(118, 0, 0, 1)
+                    FontWeight: =FontWeight.Normal
+                    Height: =68
+                    HoverFill: =RGBA(118, 0, 0, 0.8)
+                    OnSelect: |+
+                        =UpdateContext({Cont_RecusaManutencao: true}) 
+                        
+                    Size: =18
+                    Text: ="CANCELAR"
+                    Width: =152
+                    X: =438
+                    Y: =29
+                    ZIndex: =2
+
+                Button1_21 As button:
+                    BorderColor: =RGBA(255, 255, 255, 1)
+                    DisplayMode: |-
+                        =If(
+                            Manutencoes_2.Selected.'Status '.Value = "Pendente",
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    FontWeight: =FontWeight.Normal
+                    Height: =68
+                    HoverFill: =RGBA(56, 96, 178, 0.8)
+                    OnSelect: |-
+                        =
+                        UpdateContext({Cont_AndamentoManutencao: true})
+                    Size: =18
+                    Text: ="EM ANDAMENTO"
+                    Width: =206
+                    X: =217
+                    Y: =29
+                    ZIndex: =3
+
+            Title_DataCard1_3 As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="Title"
+                Default: =ThisItem.Title
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"Title")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@Requisicoes], DataSourceInfo.MaxLength, "Title")
+                Required: =false
+                Update: =DataCardValue1_6.Text
+                Width: =640
+                X: =0
+                Y: =1
+                ZIndex: =2
+
+                DataCardKey1_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: ="Título"
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue1_6 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =70
+                    MaxLength: =Parent.MaxLength
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey1_6.Y + DataCardKey1_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage1_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue1_6.Y + DataCardValue1_6.Height
+                    ZIndex: =3
+
+                StarVisible1_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey1_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey1_6.Y
+                    ZIndex: =4
+
+            Prioridade_DataCard1_3 As typedDataCard.comboBoxEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="Prioridade"
+                Default: =ThisItem.Prioridade
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"Prioridade")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =DataCardValue2_6.Selected
+                Width: =640
+                X: =0
+                Y: =2
+                ZIndex: =2
+
+                DataCardKey2_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue2_6 As combobox:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    DefaultSelectedItems: =Parent.Default
+                    DisplayFields: =["Value"]
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =70
+                    Items: =Choices([@Requisicoes].Prioridade)
+                    PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                    SearchFields: =["Value"]
+                    SearchItems: =Choices(Requisicoes.Prioridade,DataCardValue2_6.SearchText)
+                    SelectMultiple: =false
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey2_6.Y + DataCardKey2_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage2_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue2_6.Y + DataCardValue2_6.Height
+                    ZIndex: =3
+
+                StarVisible2_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey2_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey2_6.Y
+                    ZIndex: =4
+
+            Link_DataCard1_3 As typedDataCard.urlEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="Link"
+                Default: =ThisItem.Link
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"Link")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =DataCardValue5_6.Text
+                Width: =640
+                X: =0
+                Y: =6
+                ZIndex: =2
+
+                DataCardKey5_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue5_6 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =70
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey5_6.Y + DataCardKey5_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage5_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue5_6.Y + DataCardValue5_6.Height
+                    ZIndex: =3
+
+                StarVisible5_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey5_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey5_6.Y
+                    ZIndex: =4
+
+            "'Preço _DataCard1_3' As typedDataCard.numberEditCard":
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="Pre_x00e7_o"
+                Default: =ThisItem.'Preço '
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"Pre_x00e7_o")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =Value(DataCardValue3_6.Text)
+                Width: =640
+                X: =0
+                Y: =7
+                ZIndex: =2
+
+                DataCardKey3_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue3_6 As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Format: =TextFormat.Number
+                    Height: =70
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey3_6.Y + DataCardKey3_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage3_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue3_6.Y + DataCardValue3_6.Height
+                    ZIndex: =3
+
+                StarVisible3_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey3_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey3_6.Y
+                    ZIndex: =4
+
+            Anexos_DataCard1_3 As typedDataCard.attachmentsEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="{Attachments}"
+                Default: =ThisItem.Anexos
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: =DataSourceInfo([@Requisicoes],DataSourceInfo.DisplayName,"{Attachments}")
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =524
+                Required: =false
+                Update: =DataCardValue6_6.Attachments
+                Width: =640
+                X: =0
+                Y: =8
+                ZIndex: =2
+
+                DataCardKey6_6 As label:
+                    AutoHeight: =true
+                    Height: =48
+                    Size: =21
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                DataCardValue6_6 As attachments:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    DisplayMode: =Parent.DisplayMode
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =394
+                    IsInDataCard: =true
+                    Items: =Parent.Default
+                    PaddingBottom: =5
+                    PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                    PaddingRight: =5
+                    PaddingTop: =5
+                    Size: =21
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey6_6.Y + DataCardKey6_6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage6_6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =24
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardValue6_6.Y + DataCardValue6_6.Height
+                    ZIndex: =3
+
+                StarVisible6_6 As label:
+                    Align: =Align.Center
+                    Height: =DataCardKey6_6.Height
+                    Size: =21
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey6_6.Y
+                    ZIndex: =4
+
+                Rectangle4_9 As rectangle:
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =1
+                    Width: =580
+                    X: =30
+                    Y: =508
+                    ZIndex: =5
+
+    GroupStatus_1 As group:
+        Height: =5
+        Width: =5
+        X: =12
+        Y: =20
+        ZIndex: =18
+
+        Button2_16 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Fill: =RGBA(136, 160, 209, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =50
+            HoverFill: =RGBA(9, 33, 98, 0.8)
+            OnSelect: |-
+                =UpdateContext({FiltroStatus: "Concluido"});UpdateContext({Card_InfoManutencao: false})
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Text: ="CONCLUÍDO"
+            Width: =142
+            X: =487
+            Y: =89
+            ZIndex: =9
+
+        Button2_17 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Fill: =RGBA(136, 160, 209, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =50
+            HoverFill: =RGBA(9, 33, 98, 0.8)
+            OnSelect: |-
+                =UpdateContext({FiltroStatus: "Pendente"});UpdateContext({Card_InfoManutencao: false})
+            PressedFill: =RGBA(255, 255, 255, 1)
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Text: ="PENDENTE"
+            Width: =135
+            X: =13
+            Y: =89
+            ZIndex: =10
+
+        Button2_19 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Fill: =RGBA(136, 160, 209, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =50
+            HoverFill: =RGBA(9, 33, 98, 0.8)
+            OnSelect: |-
+                =UpdateContext({FiltroStatus: "Cancelado"});UpdateContext({Card_InfoManutencao: false})
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Text: ="CANCELADO"
+            Width: =132
+            X: =347
+            Y: =89
+            ZIndex: =11
+
+        Button2_18 As button:
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Fill: =RGBA(136, 160, 209, 1)
+            FontWeight: =FontWeight.Normal
+            Height: =50
+            HoverFill: =RGBA(9, 33, 98, 0.8)
+            OnSelect: |-
+                =UpdateContext({FiltroStatus: "Em andamento"});UpdateContext({Card_InfoManutencao: false})
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Text: ="EM ANDAMENTO"
+            Width: =181
+            X: =158
+            Y: =89
+            ZIndex: =12
+
+    Cabecalho_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =24
+
+        Rectangle1_7 As rectangle:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =150
+            Width: =640
+            ZIndex: =2
+
+        Label1_6 As label:
+            Color: =RGBA(9, 33, 98, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =72
+            Size: =21
+            Text: ="Manutenções"
+            Width: =203
+            X: =220
+            ZIndex: =3
+
